@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+		<meta name="description" content="Web application to create and edit HTML, CSS and Javascript" />
+		<meta name="keywords" content="HTML, CSS, Javascript, Web Editor" />
+		
+		<title>JHC Webitor v1.0</title>
+
+		<script type="text/javascript" src="./scripts/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="./scripts/jquery-ui-1.8.20.custom.min.js"></script>
+		<script type="text/javascript" src="./scripts/main.js"></script>
+		<link rel="stylesheet" type="text/css" href="./css/main.css" />
+		<link rel="stylesheet" type="text/css" href="./css/jquery-ui-1.8.20.custom.css" />
+
+	</head>
+	<body>
+
+		<header>
+			<img id="logo-img" src="./images/logo.png" alt="JHC Webitor Logo"/>
+			<nav>
+				<ul id="ul-main-menu">
+					<li><a id="a-new-project" href="#"><span>New</span></a></li>
+					<li><a id="a-open-project" href="#"><span>Open</span></a></li>
+					<li><a id="a-save-project" href="#"><span>Save</span></a></li>
+					<li><a id="a-download-project" href="#"><span>Download</span></a></li>
+					<li><a id="a-about" href="#"><span>About</span></a></li>
+				</ul>
+			</nav>
+		</header>
+
+		<div id="content">
+			<div id="project-name"><p>Project - Untitled</p></div>
+
+			<div id="toolbar">
+				<ul id="ul-toolbar">
+					<li><a id="a-preview" href="#"><span>Preview</span></a></li>
+					<li><a id="a-reset" href="#"><span>Reset</span></a></li>
+					<li><a id="a-bg" href="#"><span>Background</span></a></li>
+				</ul>
+			</div>
+
+			<!-- HTML, CSS, Javascript and Run Tabs -->
+			<div id="tabs">
+				<!-- Tabs -->
+				<ul>
+					<li><a href="#tabs-html">HTML</a></li>
+					<li><a href="#tabs-css">CSS</a></li>
+					<li><a id="a-tabs-js" href="#tabs-js">JSCRIPT</a></li>
+					<li><a id="a-tabs-run" href="#tabs-run">RUN</a></li>
+				</ul>
+
+				<!-- Tabs panels -->
+				<div id="tabs-html">
+					<div class="code_lines"><span>1</span></div>
+					<textarea id="html-window" rows="38"><body></body></textarea>
+				</div>
+
+				<div id="tabs-css">
+					<div class="code_lines"><span>1</span></div>
+					<textarea id="css-window" rows="38">body {}</textarea>
+				</div>
+
+				<div id="tabs-js">
+					<div class="code_lines"><span>1</span></div>
+					<textarea id="js-window" rows="38">$(document).ready(function() {});</textarea>
+				</div>
+
+				<div id="tabs-run">
+					<iframe id="run-window"></iframe>
+				</div>
+			</div>
+
+			<!-- Preview window -->
+			<div id="div-preview">
+				<div class="title-bar">
+					<p>Preview</p>
+					<img src="./images/cancel.png" alt="close button" />
+				</div>
+				<iframe id="iframe-preview"></iframe>
+			</div>
+
+			<!-- About window -->
+			<div id="div-about">
+				<div class="title-bar">
+					<p>About</p>
+					<img src="./images/cancel.png" alt="close button" />
+				</div>
+				<h2>JHC Webitor</h2>
+				<p class="text-about">JHC Webitor stands for Javascript, HTML and CSS web editor. It's was created to supply a need for an open source editor to run on the browser. Besides that, it was also a project to develop HTML, CSS, Javascript and JQuery skills.</p>
+				<p class="text-about">©2012 Electronic Head. All rights reserved.</p>
+			</div>
+
+			<!-- Download window - It will have all the html, css and js data for copy/paste -->
+			<div id="div-download">
+				<div class="title-bar">
+					<p>Download</p>
+					<img src="./images/cancel.png" alt="close button" />
+				</div>
+				<div id="div-download-content"><p></p></div>			
+			</div>
+		</div>
+
+	</body>
+</html>
