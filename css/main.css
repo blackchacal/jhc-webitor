@@ -239,12 +239,9 @@ div.code-lines span {
 }
 
 #div-preview.docked {
-	position: absolute;
-	top: 123px;
-	left: 656px;
 	width: 600px;
 	height: 536px;
-	z-index: 3;
+	z-index: 2;
 	border: none;
 }
 

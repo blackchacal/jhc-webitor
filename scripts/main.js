@@ -5,9 +5,13 @@ $(function() {
 		$("#tabs").tabs().find( ".ui-tabs-nav" ).sortable({ axis: "x" });
 });
 
-// >>> Main functions and variables
+// >>> Main Variables
 
 var htmlPageStructureBegin = '<!DOCTYPE HTML><html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head><script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>';
+var wleft; // preview window current left position
+var wtop; // preview window current top position
+
+// >>> Main functions
 
 var loadData = function(frame, html, css, jscript) {
 // function that creates html document to be uploaded on iframe
@@ -74,6 +78,7 @@ var resetPanel = function() {
 
 	$('div.code-lines.'+activePanel+'-code').empty(); // empty div.code-lines
 	$('<span>1</span>').appendTo('div.code-lines.'+activePanel+'-code'); // put first line number
+	loadData('iframe-preview', 'html-window', 'css-window', ''); // updates the preview result
 }
 
 var toggleBackground = function() {
@@ -224,19 +229,33 @@ var dockWindow = function() {
 
 	$('#div-preview').draggable('destroy');
 	$('#div-preview').removeClass().addClass('docked');
+	$('#div-preview').css('top', '123px');
+	$('#div-preview').css('left', '656px');
 	$('#div-preview div img.dock').attr('src', './images/reducedsize.png');
+
 	$('#html-window').css('width', '48.2%');
 	$('#html-window').css('float', 'left');
 	$('#html-window').css('left', '2px');
+	$('#css-window').css('width', '48.2%');
+	$('#css-window').css('float', 'left');
+	$('#css-window').css('left', '2px');
+	$('#js-window').css('width', '48.2%');
+	$('#js-window').css('float', 'left');
+	$('#js-window').css('left', '2px');
 }
 
-var undockWindow = function() {
+var undockWindow = function(top, left) {
 // function that undocks the preview window
+// Input:
 
-	$( "#div-preview" ).draggable({ zIndex: 2, cursor:"move", iframeFix: true, containment: "#tabs", scroll:false, stack:"#ul-toolbar" });
+	$("#div-preview").draggable({ zIndex: 2, cursor:"move", iframeFix: true, containment: "#tabs", scroll:false, stack:"#ul-toolbar" });
 	$('#div-preview').removeClass().addClass('undocked');
+	$('#div-preview').css({'top':top, 'left':left});
 	$('#div-preview div img.dock').attr('src', './images/fullsize.png');
+	
 	$('#html-window').css('width', '96.8%');
+	$('#css-window').css('width', '96.8%');
+	$('#js-window').css('width', '96.8%');
 }
 
 var onClickFunctions = function() {
@@ -246,6 +265,8 @@ var onClickFunctions = function() {
 	$("#a-tabs-run").click(function() {
 		loadData('run-window', 'html-window', 'css-window', 'js-window'); //loads html document for preview on clicking tab run
 		$("#toolbar").css("display","none"); //hides toolbar
+		$("#div-preview").css("display","none"); //hides preview window
+		undockWindow(wtop, wleft); // undocks preview window
 	});
 
 	$("#a-tabs-js").click(function() {
@@ -275,8 +296,17 @@ var onClickFunctions = function() {
 	$("#a-preview").click(function() { 
 		// opens preview window on preview button click
 		$("#div-preview").css("display", "block");
-		$("#div-preview").draggable({ zIndex: 2, cursor:"move", iframeFix: true, containment: "#tabs", scroll:false, stack:"#ul-toolbar" });
-		loadData('iframe-preview', 'html-window', 'css-window', '');
+		$("#div-preview").draggable({ zIndex: 2, cursor:"move", iframeFix: true, containment: "#tabs", scroll:false, stack:"#ul-toolbar", 
+			create: function(event, ui) { // gets current preview window position on creation
+				wleft = $("#div-preview").offset().left;
+				wtop = $("#div-preview").offset().top;
+			}
+		});
+		$('#div-preview').bind("dragstop", function(event, ui) { // gets current preview window position on dragstop
+			wleft = $("#div-preview").offset().left;
+			wtop = $("#div-preview").offset().top;
+		});
+		loadData('iframe-preview', 'html-window', 'css-window', ''); // loads the preview result
 	});
 
 	$("#div-preview div img.close").click(function() { 
@@ -286,10 +316,11 @@ var onClickFunctions = function() {
 
 	$("#div-preview div img.dock").click(function() { 
 		// docks the window and divides the panel in two, code|preview
+		
 		if ( $("#div-preview").hasClass('undocked') )
 			dockWindow();
 		else
-			undockWindow();
+			undockWindow(wtop, wleft);
 	});
 
 // About window
