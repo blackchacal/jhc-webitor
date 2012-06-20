@@ -1,0 +1,15 @@
+Project: JHC Webitor
+
+JHC Webitor stands for Javascript, HTML and CSS Web Editor. It was created to supply the need to have an easy interchange between code and preview while coding HTML, CSS and Javascript. The idea was inspired from other projects like JSFiddle and CSSBox (it seems to be down!). Basically, the idea is by running this app on the browser, it's easy to code and preview on the fly. Another reason for this project is also to develop my skills on Javascript, JQuery, HTML, CSS and DOM. The project is created entirely with Javascript, JQuery, HTML and CSS.
+
+Features:
+- Code line number counting
+- Interchangeable Tabs for HTML, CSS, Javascript and RUN
+- Simple Toolbar
+
+Testing:
+Currently only tested in Chromium, version 18.0.1025.168.
+
+Contacts:
+Author: Ricardo Tonet
+
