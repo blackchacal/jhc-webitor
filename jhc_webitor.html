@@ -52,18 +52,18 @@
 
 				<!-- Tabs panels -->
 				<div id="tabs-html">
-					<div class="code_lines"><span>1</span></div>
-					<textarea id="html-window" rows="38"><body></body></textarea>
+					<div class="code-lines html-code"><span>1</span></div>
+					<textarea id="html-window" class="white" rows="38"><body></body></textarea>
 				</div>
 
 				<div id="tabs-css">
-					<div class="code_lines"><span>1</span></div>
-					<textarea id="css-window" rows="38">body {}</textarea>
+					<div class="code-lines css-code"><span>1</span></div>
+					<textarea id="css-window" class="white" rows="38">body {}</textarea>
 				</div>
 
 				<div id="tabs-js">
-					<div class="code_lines"><span>1</span></div>
-					<textarea id="js-window" rows="38">$(document).ready(function() {});</textarea>
+					<div class="code-lines js-code"><span>1</span></div>
+					<textarea id="js-window" class="white" rows="38">$(document).ready(function() {});</textarea>
 				</div>
 
 				<div id="tabs-run">
@@ -72,10 +72,11 @@
 			</div>
 
 			<!-- Preview window -->
-			<div id="div-preview">
+			<div id="div-preview" class="undocked">
 				<div class="title-bar">
 					<p>Preview</p>
-					<img src="./images/cancel.png" alt="close button" />
+					<img class="dock" src="./images/fullsize.png" alt="dock window"/>
+					<img class="close" src="./images/cancel.png" alt="close button" />
 				</div>
 				<iframe id="iframe-preview"></iframe>
 			</div>
@@ -84,8 +85,9 @@
 			<div id="div-about">
 				<div class="title-bar">
 					<p>About</p>
-					<img src="./images/cancel.png" alt="close button" />
+					<img class="close" src="./images/cancel.png" alt="close button" />
 				</div>
+
 				<h2>JHC Webitor</h2>
 				<p class="text-about">JHC Webitor stands for Javascript, HTML and CSS web editor. It's was created to supply a need for an open source editor to run on the browser. Besides that, it was also a project to develop HTML, CSS, Javascript and JQuery skills.</p>
 				<p class="text-about">©2012 Electronic Head. All rights reserved.</p>
@@ -95,7 +97,7 @@
 			<div id="div-download">
 				<div class="title-bar">
 					<p>Download</p>
-					<img src="./images/cancel.png" alt="close button" />
+					<img class="close" src="./images/cancel.png" alt="close button" />
 				</div>
 				<div id="div-download-content"><p></p></div>			
 			</div>

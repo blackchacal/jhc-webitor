@@ -3,9 +3,9 @@
 // function to generate tabs
 $(function() {
 		$("#tabs").tabs().find( ".ui-tabs-nav" ).sortable({ axis: "x" });
-		$( "#div-about" ).draggable({zIndex: 2, cursor:"move" });
-		$( "#div-preview" ).draggable({zIndex: 2, cursor:"move", iframeFix: true });
-		$( "#div-download" ).draggable({zIndex: 2, cursor:"move" });
+		$( "#div-about" ).draggable({ zIndex: 2, cursor:"move", containment: "#tabs", scroll:false });
+		$( "#div-preview" ).draggable({ zIndex: 2, cursor:"move", iframeFix: true, containment: "#tabs", scroll:false });
+		//$( "#div-download" ).draggable({ zIndex: 2, cursor:"move", containment: "#tabs", scroll:false });
 });
 
 // >>> Main functions and variables
@@ -74,28 +74,62 @@ var resetPanel = function() {
 		$("#css-window").val("body {}");
 	else if (activePanel == "js")
 		$("#js-window").val("$(document).ready(function() {});");
+
+	$('div.code-lines.'+activePanel+'-code').empty(); // empty div.code-lines
+	$('<span>1</span>').appendTo('div.code-lines.'+activePanel+'-code'); // put first line number
 }
 
-var changeTextareaSize = function(id_name) {
+var toggleBackground = function() {
+// function that toggles the background of the active panel, black/white
+
+	var activePanel = $("#tabs > div").not(".ui-tabs-hide").attr("id");
+	activePanel = activePanel.slice(5, activePanel.length); // get the name of the active panel
+
+	if ( $('#'+activePanel+'-window').hasClass('black') ) {
+		$('#'+activePanel+'-window').removeClass('black');
+		$('#'+activePanel+'-window').addClass('white');
+	} else {
+		$('#'+activePanel+'-window').removeClass('white');
+		$('#'+activePanel+'-window').addClass('black');
+	}
+}
+
+var changeTextareaSize = function(tab_name) {
 // function that increases or decreases the textarea according with content size
 // Input:
-// id_name -> the name of the textarea id
+// tab_name -> the name of the tab being edited. Possible values 'html', 'css' or 'js'
 
-	var text_buffer = getTextareaBufferData(id_name);
-	var textarea_rows = $('#'+id_name).prop('rows');
+	var text_buffer = getTextareaBufferData(tab_name+'-window');
+	var textarea_rows = $('#'+tab_name+'-window').prop('rows');
 
+	//checks if the number of code lines is greater than the size of textarea, 
+	// if so, increases that textarea and the line number div
 	if (text_buffer['size'] > textarea_rows) {
-		$('#'+id_name).prop('rows', function(index, value) { return value + 1; });
-		$('div.code_lines').height(function() { return $('#'+id_name).height() + 3; });
-		$('#tabs-html').scrollTop(function(index, value) { return value + 15; });
+		$('#'+tab_name+'-window').prop('rows', function(index, value) { 
+			return value + 1; 
+		});
+		$('div.code-lines.'+tab_name+'-code').height(function() { 
+			return $('#'+tab_name+'-window').height() + 3; 
+		});
+		$('#tabs-'+tab_name).scrollTop(function(index, value) { 
+			return value + 15; 
+		});
 	}
-	if (text_buffer['size'] > 38 && text_buffer['size'] < textarea_rows) {
-		$('#'+id_name).prop('rows', function(index, value) { return value - 1; });
-		$('div.code_lines').height(function() { return $('#'+id_name).height() + 3; });
-		$('#tabs-html').scrollTop(function(index, value) { return value + 15; });
+	//checks if the number of code lines is greater than the default size of textarea
+	// but smaller than the actual textarea size, if so, decreases that textarea and the line number div
+	if (text_buffer['size'] > 38 && text_buffer['size'] < textarea_rows) { 
+		$('#'+tab_name+'-window').prop('rows', function(index, value) { 
+			return value - 1; 
+		});
+		$('div.code-lines.'+tab_name+'-code').height(function() { 
+			return $('#'+tab_name+'-window').height() + 3; 
+		});
+		$('#tabs-'+tab_name).scrollTop(function(index, value) { 
+			return value + 15; 
+		});
 	}
-	if (text_buffer['size'] <= 38)
-		$('#tabs-html').scrollTop(0);
+	if (text_buffer['size'] <= 38) // sets scroll bar to top
+		$('#tabs-'+tab_name).scrollTop(0);
 }
 
 var getTextareaBufferData = function(id_name) {
@@ -103,6 +137,8 @@ var getTextareaBufferData = function(id_name) {
 // number of lines and an array with every line content
 // Input:
 // id_name -> the name of the textarea id
+// Output:
+// buffer -> dictionary with the number of lines of code, and a list of the lines content
 
 	var buffer = {};
 	var text_str = '';
@@ -122,33 +158,88 @@ var getTextareaBufferData = function(id_name) {
 
 var checkForEmptyLine = function(text_lines, line) {
 // function that checks for an empty text line
+// Input:
+// text_lines -> list of text lines content
+// line -> line chosen to check if it's empty
+// Output:
+// ...(Boolean) -> returns a true for empty line and false otherwise
+
 
 	var patt = /[^\s]/; // pattern for non_empty line
 	return !patt.test( text_lines[line-1] );
 }
 
-var updateCodeLineNumber = function() {
+var updateCodeLineNumber = function(tab_name) {
 // function that updates the code line number values
+// Input:
+// tab_name -> the name of the tab being edited. Possible values 'html', 'css' or 'js'
 
-	var text_buffer = getTextareaBufferData('html-window');
+	var text_buffer = getTextareaBufferData(tab_name+'-window');
 	var nl_number = text_buffer['size'];
 	
-	$('div.code_lines').empty(); // empty div.code_lines
+	$('div.code-lines.'+tab_name+'-code').empty(); // empty div.code-lines
 	for (i = 1; i <= nl_number; i++)
-		$('<span>'+i+'</span>').appendTo('div.code_lines');
+		$('<span>'+i+'</span>').appendTo('div.code-lines.'+tab_name+'-code');
 }
 
 var codeLineNumberManagement = function() {
 // function that assigns the proper events and sub-functions to deal with code line number management
 
 	$("#html-window").keydown(function() {
-		updateCodeLineNumber();
-		changeTextareaSize('html-window');
+		updateCodeLineNumber('html');
+		changeTextareaSize('html');
 	});
 	$("#html-window").keyup(function() {
-		updateCodeLineNumber();
-		changeTextareaSize('html-window');
+		updateCodeLineNumber('html');
+		changeTextareaSize('html');
 	});
+	$("#css-window").keydown(function() {
+		updateCodeLineNumber('css');
+		changeTextareaSize('css');
+	});
+	$("#css-window").keyup(function() {
+		updateCodeLineNumber('css');
+		changeTextareaSize('css');
+	});
+	$("#js-window").keydown(function() {
+		updateCodeLineNumber('js');
+		changeTextareaSize('js');
+	});
+	$("#js-window").keyup(function() {
+		updateCodeLineNumber('js');
+		changeTextareaSize('js');
+	});
+}
+
+var updatePreviewWindow = function() {
+// function to allows the preview window to be updated while the user is typing
+
+	$('#html-window').keyup(function() {
+		loadData('iframe-preview', 'html-window', 'css-window', '');
+	});
+	$('#css-window').keyup(function() {
+		loadData('iframe-preview', 'html-window', 'css-window', '');
+	});
+}
+
+var dockWindow = function() {
+// function that docks the preview window to the panel
+
+	$('#div-preview').draggable('destroy');
+	$('#div-preview').removeClass().addClass('docked');
+	$('#div-preview div img.dock').attr('src', './images/reducedsize.png');
+	$('#html-window').css('width', '48.2%');
+	$('#html-window').css('float', 'left');
+	$('#html-window').css('left', '2px');
+}
+
+var undockWindow = function() {
+// function that undocks the preview window
+
+	$( "#div-preview" ).draggable({ zIndex: 2, cursor:"move", iframeFix: true, containment: "#tabs", scroll:false });
+	$('#div-preview').removeClass().addClass('undocked');
+	$('#div-preview div img.dock').attr('src', './images/fullsize.png');
+	$('#html-window').css('width', '96.8%');
 }
 
 var onClickFunctions = function() {
@@ -178,6 +269,11 @@ var onClickFunctions = function() {
 		resetPanel();
 	});
 
+// Background button - toolbar
+	$("#a-bg").click(function() {
+		toggleBackground();
+	});
+
 // Preview window
 	$("#a-preview").click(function() { 
 		// opens preview window on preview button click
@@ -185,9 +281,17 @@ var onClickFunctions = function() {
 		loadData('iframe-preview', 'html-window', 'css-window', '');
 	});
 
-	$("#div-preview div img").click(function() { 
+	$("#div-preview div img.close").click(function() { 
 		// closes preview window on close button click
 		$("#div-preview").css("display", "none");
+	});
+
+	$("#div-preview div img.dock").click(function() { 
+		// docks the window and divides the panel in two, code|preview
+		if ( $("#div-preview").hasClass('undocked') )
+			dockWindow();
+		else
+			undockWindow();
 	});
 
 // About window
@@ -196,7 +300,7 @@ var onClickFunctions = function() {
 		$("#div-about").css("display", "block");
 	});
 
-	$("#div-about div img").click(function() { 
+	$("#div-about div img.close").click(function() { 
 		// closes about window on close button click
 		$("#div-about").css("display", "none");
 	});
@@ -212,7 +316,7 @@ var onClickFunctions = function() {
 		downloadProject();	
 	});
 
-	$("#div-download div img").click(function() { 
+	$("#div-download div img.close").click(function() { 
 		// closes preview window on close button click
 		$("#div-download").css("display", "none");
 	});
@@ -221,4 +325,5 @@ var onClickFunctions = function() {
 $(document).ready(function() {
 	onClickFunctions();
 	codeLineNumberManagement();
+	updatePreviewWindow();
 });

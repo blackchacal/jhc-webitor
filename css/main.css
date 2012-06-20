@@ -106,8 +106,9 @@ header {
 	padding: 2px 5px;
 }
 
-div.code_lines {
+div.code-lines {
 	position: relative;
+	float: left;
 	left: 0px;
 	top: 2px;
 	padding-top: 3px;
@@ -119,7 +120,7 @@ div.code_lines {
 	overflow: hidden;
 }
 
-div.code_lines span {
+div.code-lines span {
 	width: 30px;
 	height: 14px;
 	text-align: right;
@@ -147,12 +148,22 @@ div.code_lines span {
 
 #tabs textarea {
 	width: 96.8%;
-	float: right;
 	position: relative;
+	float: right;
 	right: 3px;
 	border: 1px solid #c9b447;
 	font-size: 12px;
 	overflow: hidden;
+}
+
+.black {
+	background-color: #000000;
+	color: #ffffff;
+}
+
+.white {
+	background-color: #ffffff;
+	color: #000000;
 }
 
 #tabs #tabs-run iframe {
@@ -202,6 +213,10 @@ div.code_lines span {
 	top: -22px;
 }
 
+#div-preview div.title-bar img {
+	left: 460px;
+}
+
 #div-about div.title-bar img {
 	left: 280px;
 } 
@@ -221,6 +236,35 @@ div.code_lines span {
 
 #div-about {
 	height: 220px;
+}
+
+#div-preview.docked {
+	position: absolute;
+	top: 123px;
+	left: 656px;
+	width: 600px;
+	height: 536px;
+	z-index: 3;
+	border: none;
+}
+
+#div-preview.docked div.title-bar {
+	background: none;
+}
+
+#div-preview.docked div.title-bar img.dock {
+	left: 582px;
+	top: -9px;
+}
+
+#div-preview.docked div.title-bar p, #div-preview.docked div.title-bar img.close {
+	display: none;
+}
+
+#div-preview.docked iframe {
+	top: -20px;
+	width: 598px;
+	height: 535px;
 }
 
 #div-preview iframe, #div-download-content {
