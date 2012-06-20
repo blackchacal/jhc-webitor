@@ -6,6 +6,8 @@ Features:
 - Code line number counting
 - Interchangeable Tabs for HTML, CSS, Javascript and RUN
 - Simple Toolbar
+- Dockable preview window
+- Editor toggleable background (black|white)
 
 Testing:
 Currently only tested in Chromium, version 18.0.1025.168.
