@@ -78,7 +78,7 @@ var resetPanel = function() {
 
 	$('div.code-lines.'+activePanel+'-code').empty(); // empty div.code-lines
 	$('<span>1</span>').appendTo('div.code-lines.'+activePanel+'-code'); // put first line number
-	loadData('iframe-preview', 'html-window', 'css-window', ''); // updates the preview result
+	loadData('iframe-preview', 'html-window', 'css-window', 'js-window'); // updates the preview result
 }
 
 var toggleBackground = function() {
@@ -217,10 +217,10 @@ var updatePreviewWindow = function() {
 // function to allows the preview window to be updated while the user is typing
 
 	$('#html-window').keyup(function() {
-		loadData('iframe-preview', 'html-window', 'css-window', '');
+		loadData('iframe-preview', 'html-window', 'css-window', 'js-window');
 	});
 	$('#css-window').keyup(function() {
-		loadData('iframe-preview', 'html-window', 'css-window', '');
+		loadData('iframe-preview', 'html-window', 'css-window', 'js-window');
 	});
 }
 
@@ -269,10 +269,6 @@ var onClickFunctions = function() {
 		undockWindow(wtop, wleft); // undocks preview window
 	});
 
-	$("#a-tabs-js").click(function() {
-		$("li > #a-preview").css("display","none"); //hides preview button			
-	});
-
 	$("#tabs > ul > li > a").not("#a-tabs-js").click(function() {
 		$("li > #a-preview").css("display","inline"); //shows preview button	
 	});
@@ -306,7 +302,7 @@ var onClickFunctions = function() {
 			wleft = $("#div-preview").offset().left;
 			wtop = $("#div-preview").offset().top;
 		});
-		loadData('iframe-preview', 'html-window', 'css-window', ''); // loads the preview result
+		loadData('iframe-preview', 'html-window', 'css-window', 'js-window'); // loads the preview result
 	});
 
 	$("#div-preview div img.close").click(function() { 
